@@ -6,6 +6,7 @@
 #include "tarolo.h"
 
 class Menu {
+    friend class MenuTest;
 private:
     Tarolo<Alapanyag>& alapanyagTarolo;
     Tarolo<Recept>& receptTarolo;

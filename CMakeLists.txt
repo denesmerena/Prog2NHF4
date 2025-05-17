@@ -16,6 +16,11 @@ recept.h
         fajlkezelo.cpp
 alapanyag.h
         menu.h
-        menu.cpp)
+        menu.cpp
+test.cpp
+test.h
+gtest_lite.h
+memtrace.h
+memtrace.cpp)
 
 add_compile_definitions(MEMTRACE)

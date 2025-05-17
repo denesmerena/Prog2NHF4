@@ -8,7 +8,11 @@ Menu::Menu(Tarolo<Alapanyag>& alapanyagTarolo, Tarolo<Recept>& receptTarolo)
 
 void Menu::clearInputBuffer() {
     std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    while (std::cin.peek() != '\n' && std::cin.peek() != EOF) {
+        std::cin.ignore(1);
+    }
+    if (std::cin.peek() == '\n')
+        std::cin.ignore(1);
 }
 
 void Menu::displayMenu() const {

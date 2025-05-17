@@ -3,19 +3,15 @@
 #include "tarolo.h"
 #include "alapanyag.h"
 #include "menu.h"
+#include "test.h"
 
 
 int main() {
-    Tarolo<Alapanyag> alapanyagTarolo;
-    Tarolo<Recept> receptTarolo;
 
-    try {
-        Menu menu(alapanyagTarolo, receptTarolo);
-        menu.run();
-    } catch (const std::exception& e) {
-        std::cerr << "Váratlan hiba történt: " << e.what() << std::endl;
-        return 1;
-    }
+    MenuTest menuTest;
+    menuTest.runAllTests();
+
+
 
     return 0;
 }
