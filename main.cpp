@@ -8,8 +8,10 @@
 
 int main() {
 
-    MenuTest menuTest;
-    menuTest.runAllTests();
+    test_Alapanyag_es_Tarolo();
+    test_Recept_es_Hozzavalo();
+    test_Mentes_es_Betoltes();
+
 
 
 

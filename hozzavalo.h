@@ -4,7 +4,7 @@
 #include "alapanyag.h"
 
 class Hozzavalo {
-	const Alapanyag& alapanyag;
+	const Alapanyag& alapanyag;  // pointer a referencia helyett
 	double mennyiseg;
 
 public:

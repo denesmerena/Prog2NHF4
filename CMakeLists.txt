@@ -18,9 +18,9 @@ alapanyag.h
         menu.h
         menu.cpp
 test.cpp
-test.h
-gtest_lite.h
+        gtest_lite.h
 memtrace.h
-memtrace.cpp)
+memtrace.cpp
+        test.h)
 
 add_compile_definitions(MEMTRACE)

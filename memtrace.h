@@ -6,6 +6,7 @@ Kanari:     Szeberenyi Imre, 2013.,
 VS 2012:    Szeberényi Imre, 2015.,
 mem_dump:   2016.
 inclue-ok:  2017., 2018., 2019., 2021., 2022.
+clang-mágia:Bodor András, 2025
 *********************************/
 
 #ifndef MEMTRACE_H
@@ -222,6 +223,16 @@ void operator delete[](void * p, size_t) THROW_NOTHING;
 void operator delete(void *p, int, const char *) THROW_NOTHING;
 void operator delete[](void *p, int, const char *) THROW_NOTHING;
 
+// clang >= 3.1 esetén vannak warningok, amiket zavar, hogy redefiniálva van a new/delete
+#if defined(__clang__) && (__clang_major__ > 3 || \
+                           (__clang_major__ == 3 && __clang_minor__ > 0))
+   // Csak nagyon drasztikus warning szint mellet jön elő, amikor van rekurzívnak tűnő makró.
+   // Ilyenek a new és delete alább, hiszen olyan, mintha magukat hívnák, pedig nincs (ilyen)
+   // rekurzió makró szinten.
+#  pragma clang diagnostic ignored "-Wdisabled-macro-expansion"
+   // Bármilyen kulcsszó újradefiniálása esetén pánikol.
+#  pragma clang diagnostic ignored "-Wkeyword-macro"
+#endif
 
 #define new new(__LINE__, __FILE__)
 #define delete memtrace::set_delete_call(__LINE__, __FILE__),delete

@@ -2,6 +2,7 @@
 #include "fajlkezelo.h"
 #include <iostream>
 #include <limits>
+#include "memtrace.h"
 
 Menu::Menu(Tarolo<Alapanyag>& alapanyagTarolo, Tarolo<Recept>& receptTarolo)
     : alapanyagTarolo(alapanyagTarolo), receptTarolo(receptTarolo) {}
@@ -16,24 +17,24 @@ void Menu::clearInputBuffer() {
 }
 
 void Menu::displayMenu() const {
-    std::cout << "=== Italrecept Nyilvántartó ===\n";
-    std::cout << "1. Új alapanyag bevitele\n";
-    std::cout << "2. Új recept bevitele\n";
-    std::cout << "3. Recept törlése\n";
-    std::cout << "4. Hozzávalók listázása\n";
-    std::cout << "5. Adatbázis mentése fájlba\n";
-    std::cout << "6. Adatbázis betöltése fájlból\n";
-    std::cout << "0. Kilépés\n";
-    std::cout << "Válassz egy opciót: ";
+    std::cout << "=== Italrecept Nyilvantarto ===\n";
+    std::cout << "1. uj alapanyag bevitele\n";
+    std::cout << "2. uj recept bevitele\n";
+    std::cout << "3. Recept torlese\n";
+    std::cout << "4. Hozzavalok listazasa\n";
+    std::cout << "5. Adatbazis mentese fajlba\n";
+    std::cout << "6. Adatbazis betoltese fajlbol\n";
+    std::cout << "0. Kilepes\n";
+    std::cout << "Valassz egy opciot: ";
 }
 
 void Menu::ujAlapanyagBevitel() {
     std::string nev, mertekegyseg;
 
-    std::cout << "Új alapanyag neve: ";
+    std::cout << "uj alapanyag neve: ";
     std::getline(std::cin, nev);
 
-    std::cout << "Mértékegység: ";
+    std::cout << "Mertekegyseg: ";
     std::getline(std::cin, mertekegyseg);
 
     alapanyagTarolo.add(new Alapanyag(nev, mertekegyseg));
@@ -42,19 +43,19 @@ void Menu::ujAlapanyagBevitel() {
 
 void Menu::ujReceptBevitel() {
     if (alapanyagTarolo.getMennyiseg() == 0) {
-        std::cout << "Nincsenek alapanyagok a recepthez. Először adjon hozzá alapanyagokat!\n\n";
+        std::cout << "Nincsenek alapanyagok a recepthez. Eloszor adjon hozza alapanyagokat!\n\n";
         return;
     }
 
     std::string nev;
-    std::cout << "Új recept neve: ";
+    std::cout << "uj recept neve: ";
     std::getline(std::cin, nev);
 
     Recept* ujRecept = new Recept(nev);
     char valasz;
 
     do {
-        std::cout << "\nElérhető alapanyagok:\n";
+        std::cout << "\nElerheto alapanyagok:\n";
         for (int i = 0; i < alapanyagTarolo.getMennyiseg(); ++i) {
             std::cout << i+1 << ". " << *alapanyagTarolo[i] << "\n";
         }
@@ -62,22 +63,22 @@ void Menu::ujReceptBevitel() {
         int alapanyagIndex;
         double mennyiseg;
 
-        std::cout << "Válassza ki az alapanyag sorszámát: ";
+        std::cout << "Valassza ki az alapanyag sorszamat: ";
         std::cin >> alapanyagIndex;
         clearInputBuffer();
 
         if (alapanyagIndex < 1 || alapanyagIndex > alapanyagTarolo.getMennyiseg()) {
-            std::cout << "Érvénytelen sorszám!\n";
+            std::cout << "ervenytelen sorszam!\n";
             continue;
         }
 
-        std::cout << "Mennyiség (" << alapanyagTarolo[alapanyagIndex-1]->getMertekegyseg() << "): ";
+        std::cout << "Mennyiseg (" << alapanyagTarolo[alapanyagIndex-1]->getMertekegyseg() << "): ";
         std::cin >> mennyiseg;
         clearInputBuffer();
 
         ujRecept->hozzavalohozzaad(*alapanyagTarolo[alapanyagIndex-1], mennyiseg);
 
-        std::cout << "Szeretne még hozzávalót hozzáadni? (i/n): ";
+        std::cout << "Szeretne meg hozzavalot hozzaadni? (i/n): ";
         std::cin >> valasz;
         clearInputBuffer();
     } while (valasz == 'i' || valasz == 'I');
@@ -88,53 +89,52 @@ void Menu::ujReceptBevitel() {
 
 void Menu::receptTorles() {
     if (receptTarolo.getMennyiseg() == 0) {
-        std::cout << "Nincsenek receptek a törléshez.\n\n";
+        std::cout << "Nincsenek receptek a torleshez.\n\n";
         return;
     }
 
-    std::cout << "Elérhető receptek:\n";
+    std::cout << "Elerheto receptek:\n";
     for (int i = 0; i < receptTarolo.getMennyiseg(); ++i) {
         std::cout << i+1 << ". " << receptTarolo[i]->getNev() << "\n";
     }
 
     int index;
-    std::cout << "Válassza ki a törlendő recept sorszámát: ";
+    std::cout << "Valassza ki a torlendo recept sorszamat: ";
     std::cin >> index;
     clearInputBuffer();
 
     if (index < 1 || index > receptTarolo.getMennyiseg()) {
-        std::cout << "Érvénytelen sorszám!\n\n";
+        std::cout << "ervenytelen sorszam!\n\n";
         return;
     }
-
-    // A Tarolo osztályban implementálni kell a remove metódust
-    // receptTarolo.remove(index-1);
-    std::cout << "Recept törölve.\n\n";
+    
+    receptTarolo.remove(index-1);
+    std::cout << "Recept torolve.\n\n";
 }
 
 void Menu::hozzavalokListazasa() {
     if (receptTarolo.getMennyiseg() == 0) {
-        std::cout << "Nincsenek receptek a listázáshoz.\n\n";
+        std::cout << "Nincsenek receptek a listazashoz.\n\n";
         return;
     }
 
-    std::cout << "Elérhető receptek:\n";
+    std::cout << "Elerheto receptek:\n";
     for (int i = 0; i < receptTarolo.getMennyiseg(); ++i) {
         std::cout << i+1 << ". " << receptTarolo[i]->getNev() << "\n";
     }
 
     int index;
-    std::cout << "Válassza ki a recept sorszámát: ";
+    std::cout << "Valassza ki a recept sorszamat: ";
     std::cin >> index;
     clearInputBuffer();
 
     if (index < 1 || index > receptTarolo.getMennyiseg()) {
-        std::cout << "Érvénytelen sorszám!\n\n";
+        std::cout << "ervenytelen sorszam!\n\n";
         return;
     }
 
     const Recept* recept = receptTarolo[index-1];
-    std::cout << "\n" << recept->getNev() << " recept hozzávalói:\n";
+    std::cout << "\n" << recept->getNev() << " recept hozzavaloi:\n";
     for (int i = 0; i < recept->getHozzavaloCount(); ++i) {
         const Hozzavalo* h = recept->getHozzavalo(i);
         std::cout << "- " << h->getAlapanyag().getNev() << ": "
@@ -146,27 +146,27 @@ void Menu::hozzavalokListazasa() {
 
 void Menu::adatbazisMentes() {
     std::string fajlnev;
-    std::cout << "Adja meg a fájl nevét: ";
+    std::cout << "Adja meg a fajl nevet: ";
     std::getline(std::cin, fajlnev);
 
     try {
         Fajlkezelo::mentes(receptTarolo, alapanyagTarolo, fajlnev);
-        std::cout << "Adatbázis sikeresen mentve a '" << fajlnev << "' fájlba.\n\n";
+        std::cout << "Adatbazis sikeresen mentve a '" << fajlnev << "' fajlba.\n\n";
     } catch (const std::exception& e) {
-        std::cerr << "Hiba történt a mentés során: " << e.what() << "\n\n";
+        std::cerr << "Hiba tortent a mentes soran: " << e.what() << "\n\n";
     }
 }
 
 void Menu::adatbazisBetoltes() {
     std::string fajlnev;
-    std::cout << "Adja meg a fájl nevét: ";
+    std::cout << "Adja meg a fajl nevet: ";
     std::getline(std::cin, fajlnev);
 
     try {
         Fajlkezelo::betoltes(receptTarolo, alapanyagTarolo, fajlnev);
-        std::cout << "Adatbázis sikeresen betöltve a '" << fajlnev << "' fájlból.\n\n";
+        std::cout << "Adatbazis sikeresen betoltve a '" << fajlnev << "' fajlbol.\n\n";
     } catch (const std::exception& e) {
-        std::cerr << "Hiba történt a betöltés során: " << e.what() << "\n\n";
+        std::cerr << "Hiba tortent a betoltes soran: " << e.what() << "\n\n";
     }
 }
 
@@ -198,10 +198,10 @@ void Menu::run() {
                 adatbazisBetoltes();
                 break;
             case 0:
-                std::cout << "Kilépés...\n";
+                std::cout << "Kilepes...\n";
                 break;
             default:
-                std::cout << "Érvénytelen választás!\n\n";
+                std::cout << "ervenytelen valasztas!\n\n";
                 break;
         }
     } while (valasztas != 0);

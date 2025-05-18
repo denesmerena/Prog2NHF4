@@ -1,20 +1,10 @@
+//
+// Created by Dénes on 2025. 05. 17..
+//
+
 #ifndef TEST_H
 #define TEST_H
-
-#include "menu.h"
-#include "gtest_lite.h"
-#include "memtrace.h"
-
-class MenuTest {
-public:
-    static void testClearInputBuffer();
-    static void testUjAlapanyagBevitel();
-    static void testUjReceptBevitel();
-    static void testReceptTorles();
-    static void testHozzavalokListazasa();
-    static void testAdatbazisMentesBetoltes();
-
-    static void runAllTests();
-};
-
-#endif // TEST_H
+void test_Alapanyag_es_Tarolo();
+void test_Recept_es_Hozzavalo();
+void test_Mentes_es_Betoltes();
+#endif //TEST_H

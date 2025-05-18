@@ -3,6 +3,8 @@
 
 #include "recept.h"
 
+#include "memtrace.h"
+
 template <typename T>
 Tarolo<T>::Tarolo() : elements(new T*[10]), count(0), capacity(10) {}
 
@@ -52,6 +54,16 @@ void Tarolo<T>::resize() {
     std::copy(elements, elements + count, newElements);
     delete[] elements;
     elements = newElements;
+}
+
+template <typename T>
+void Tarolo<T>::remove(int index) {
+    if (index < 0 || index >= count) throw std::out_of_range("Index out of range");
+    delete elements[index];
+    for (int i = index; i < count - 1; ++i) {
+        elements[i] = elements[i + 1];
+    }
+    --count;
 }
 
 // Explicit instantiations

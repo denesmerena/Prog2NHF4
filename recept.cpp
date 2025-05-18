@@ -1,14 +1,16 @@
 #include "recept.h"
 #include <stdexcept>
 
+#include "memtrace.h"
+
 Recept::Recept(const std::string& nev) 
     : nev(nev), hozzavalok(new Hozzavalo*[10]), count(0), capacity(10) {}
 
 Recept::~Recept() {
     for (int i = 0; i < count; ++i) {
-        delete hozzavalok[i];
+        delete hozzavalok[i];  // csak a Hozzavalo-objektumok törlése
     }
-    delete[] hozzavalok;
+    delete[] hozzavalok;       // a tömb törlése
 }
 
 const std::string& Recept::getNev() const { return nev; }
