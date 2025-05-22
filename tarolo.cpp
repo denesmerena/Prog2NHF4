@@ -65,6 +65,14 @@ void Tarolo<T>::remove(int index) {
     }
     --count;
 }
+template <typename T>
+void Tarolo<T>::clear() {
+    for (int i = 0; i < count; ++i) {
+        delete elements[i];
+    }
+    count = 0;
+}
+
 
 // Explicit instantiations
 template class Tarolo<Alapanyag>;

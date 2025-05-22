@@ -17,6 +17,7 @@ public:
     ~Tarolo();
     void add(T* element);
     void remove(int index);
+    void clear();
     T* operator[](unsigned int index) const;
     T* keres(const std::string& nev) const;
     int getMennyiseg() const;

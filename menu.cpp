@@ -1,5 +1,5 @@
 #include "menu.h"
-#include "fajlkezelo.h"
+#include "ignore/fajlkezelo.h"
 #include <iostream>
 #include <limits>
 #include "memtrace.h"
@@ -145,29 +145,29 @@ void Menu::hozzavalokListazasa() {
 }
 
 void Menu::adatbazisMentes() {
-    std::string fajlnev;
-    std::cout << "Adja meg a fajl nevet: ";
-    std::getline(std::cin, fajlnev);
-
-    try {
-        Fajlkezelo::mentes(receptTarolo, alapanyagTarolo, fajlnev);
-        std::cout << "Adatbazis sikeresen mentve a '" << fajlnev << "' fajlba.\n\n";
-    } catch (const std::exception& e) {
-        std::cerr << "Hiba tortent a mentes soran: " << e.what() << "\n\n";
-    }
+    // std::string fajlnev;
+    // std::cout << "Adja meg a fajl nevet: ";
+    // std::getline(std::cin, fajlnev);
+    //
+    // try {
+    //     Fajlkezelo::mentes(receptTarolo, alapanyagTarolo, fajlnev);
+    //     std::cout << "Adatbazis sikeresen mentve a '" << fajlnev << "' fajlba.\n\n";
+    // } catch (const std::exception& e) {
+    //     std::cerr << "Hiba tortent a mentes soran: " << e.what() << "\n\n";
+    // }
 }
 
 void Menu::adatbazisBetoltes() {
-    std::string fajlnev;
-    std::cout << "Adja meg a fajl nevet: ";
-    std::getline(std::cin, fajlnev);
-
-    try {
-        Fajlkezelo::betoltes(receptTarolo, alapanyagTarolo, fajlnev);
-        std::cout << "Adatbazis sikeresen betoltve a '" << fajlnev << "' fajlbol.\n\n";
-    } catch (const std::exception& e) {
-        std::cerr << "Hiba tortent a betoltes soran: " << e.what() << "\n\n";
-    }
+    // std::string fajlnev;
+    // std::cout << "Adja meg a fajl nevet: ";
+    // std::getline(std::cin, fajlnev);
+    //
+    // try {
+    //     Fajlkezelo::betoltes(receptTarolo, alapanyagTarolo, fajlnev);
+    //     std::cout << "Adatbazis sikeresen betoltve a '" << fajlnev << "' fajlbol.\n\n";
+    // } catch (const std::exception& e) {
+    //     std::cerr << "Hiba tortent a betoltes soran: " << e.what() << "\n\n";
+    // }
 }
 
 void Menu::run() {

@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(NHF
         main.cpp
-        fajlkezelo.h
+
 hozzavalo.h
 recept.h
         alapanyag.cpp
@@ -13,7 +13,7 @@ recept.h
         recept.cpp
         tarolo.h
         tarolo.cpp
-        fajlkezelo.cpp
+
 alapanyag.h
         menu.h
         menu.cpp
@@ -21,6 +21,8 @@ test.cpp
         gtest_lite.h
 memtrace.h
 memtrace.cpp
-        test.h)
+        test.h
+        fajlkezelo.cpp
+        fajlkezelo.h)
 
 add_compile_definitions(MEMTRACE)

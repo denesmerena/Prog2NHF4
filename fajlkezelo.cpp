@@ -4,92 +4,89 @@
 #include <stdexcept>
 #include "memtrace.h"
 
-void Fajlkezelo::mentes(const Tarolo<Recept>& receptTarolo,
-                       const Tarolo<Alapanyag>& alapanyagTarolo,
-                       const std::string& fajlnev) {
-    std::ofstream file(fajlnev);
-    if (!file) throw std::runtime_error("Fajl megnyitasi hiba");
+void Fajlkezelo::mentes(const Tarolo<Recept>& receptek, const Tarolo<Alapanyag>& alapanyagok, const std::string& fajlnev) {
+    std::ofstream out(fajlnev);
+    if (!out) {
+        throw std::runtime_error("Nem sikerült megnyitni a fajlt írásra.");
+    }
 
     // Alapanyagok mentése
-    file << "# Alapanyagok\n";
-    for (int i = 0; i < alapanyagTarolo.getMennyiseg(); ++i) {
-        file << alapanyagTarolo[i]->getNev() << ";"
-             << alapanyagTarolo[i]->getMertekegyseg() << "\n";
+    out << alapanyagok.getMennyiseg() << '\n';
+    for (int i = 0; i < alapanyagok.getMennyiseg(); ++i) {
+        out << alapanyagok[i]->getNev() << ';' << alapanyagok[i]->getMertekegyseg() << '\n';
     }
 
     // Receptek mentése
-    file << "\n# Receptek\n";
-    for (int i = 0; i < receptTarolo.getMennyiseg(); ++i) {
-        const Recept* recept = receptTarolo[i];
-        file << recept->getNev() << ";";
-
-        for (int j = 0; j < recept->getHozzavaloCount(); ++j) {
-            const Hozzavalo* h = recept->getHozzavalo(j);
-            file << h->getAlapanyag().getNev() << ":" << h->getMennyiseg();
-            if (j < recept->getHozzavaloCount() - 1) file << ",";
+    out << receptek.getMennyiseg() << '\n';
+    for (int i = 0; i < receptek.getMennyiseg(); ++i) {
+        const Recept* r = receptek[i];
+        out << r->getNev() << '\n';
+        out << r->getHozzavaloCount() << '\n';
+        for (int j = 0; j < r->getHozzavaloCount(); ++j) {
+            const Hozzavalo* h = r->getHozzavalo(j);
+            out << h->getAlapanyag().getNev() << ';' << h->getMennyiseg() << '\n';
         }
-        file << "\n";
     }
 }
 
-void Fajlkezelo::betoltes(Tarolo<Recept>& receptTarolo,
-                         Tarolo<Alapanyag>& alapanyagTarolo,
-                         const std::string& fajlnev) {
-    std::ifstream file(fajlnev);
-    if (!file) throw std::runtime_error("Fajl megnyitasi hiba");
+void Fajlkezelo::betoltes(Tarolo<Recept>& receptek, Tarolo<Alapanyag>& alapanyagok, const std::string& fajlnev) {
+    std::ifstream in(fajlnev);
+    if (!in) {
+        throw std::runtime_error("Nem sikerült megnyitni a fajlt olvasásra.");
+    }
 
-    std::string line;
-    bool alapanyagok_szekcio = false;
-    bool receptek_szekcio = false;
+    // Előző adatok ürítése
+    alapanyagok.clear();
+    receptek.clear();
 
-    while (std::getline(file, line)) {
-        // Üres sor és kommentek átugrása
-        if (line.empty() || line[0] == '#') continue;
+    int alapanyagDb;
+    in >> alapanyagDb;
+    in.ignore(); // sorvége miatt
 
-        // Szekcióváltás észlelése
-        if (line == "# Alapanyagok") {
-            alapanyagok_szekcio = true;
-            receptek_szekcio = false;
-            continue;
+    // Alapanyagok beolvasása
+    for (int i = 0; i < alapanyagDb; ++i) {
+        std::string sor;
+        std::getline(in, sor);
+        std::istringstream iss(sor);
+        std::string nev, mertekegyseg;
+        if (std::getline(iss, nev, ';') && std::getline(iss, mertekegyseg)) {
+            alapanyagok.add(new Alapanyag(nev, mertekegyseg));
         }
-        else if (line == "# Receptek") {
-            alapanyagok_szekcio = false;
-            receptek_szekcio = true;
-            continue;
-        }
+    }
 
-        // Alapanyag feldolgozása
-        if (alapanyagok_szekcio) {
-            size_t delim = line.find(';');
-            if (delim == std::string::npos) continue;
+    int receptDb;
+    in >> receptDb;
+    in.ignore();
 
-            std::string nev = line.substr(0, delim);
-            std::string mertekegyseg = line.substr(delim + 1);
-            alapanyagTarolo.add(new Alapanyag(nev, mertekegyseg));
-        }
-        // Recept feldolgozása
-        else if (receptek_szekcio) {
-            size_t delim = line.find(';');
-            if (delim == std::string::npos) continue;
+    for (int i = 0; i < receptDb; ++i) {
+        std::string receptNev;
+        std::getline(in, receptNev);
 
-            std::string nev = line.substr(0, delim);
-            Recept* recept = new Recept(nev);
+        Recept* recept = new Recept(receptNev);
 
-            std::istringstream iss(line.substr(delim + 1));
-            std::string hozzavalo;
-            while (std::getline(iss, hozzavalo, ',')) {
-                size_t colon = hozzavalo.find(':');
-                if (colon == std::string::npos) continue;
+        int hozzavalokSzama;
+        in >> hozzavalokSzama;
+        in.ignore();
 
-                std::string alapanyagNev = hozzavalo.substr(0, colon);
-                double mennyiseg = std::stod(hozzavalo.substr(colon + 1));
+        for (int j = 0; j < hozzavalokSzama; ++j) {
+            std::string sor;
+            std::getline(in, sor);
+            std::istringstream iss(sor);
+            std::string alapanyagNev, mennyisegStr;
 
-                Alapanyag* alapanyag = alapanyagTarolo.keres(alapanyagNev);
+            if (std::getline(iss, alapanyagNev, ';') && std::getline(iss, mennyisegStr)) {
+                std::istringstream mennyisegSS(mennyisegStr);
+                double mennyiseg;
+                mennyisegSS >> mennyiseg;
+
+                Alapanyag* alapanyag = alapanyagok.keres(alapanyagNev);
                 if (alapanyag) {
                     recept->hozzavalohozzaad(*alapanyag, mennyiseg);
                 }
             }
-            receptTarolo.add(recept);
         }
+
+        receptek.add(recept);
     }
 }
+

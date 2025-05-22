@@ -2,19 +2,15 @@
 #define FAJLKEZELO_H
 
 #include "tarolo.h"
-#include "recept.h"
 #include "alapanyag.h"
+#include "recept.h"
+
 #include <string>
 
 class Fajlkezelo {
 public:
-	static void mentes(const Tarolo<Recept>& receptTarolo,
-					  const Tarolo<Alapanyag>& alapanyagTarolo,
-					  const std::string& fajlnev);
-
-	static void betoltes(Tarolo<Recept>& receptTarolo,
-						Tarolo<Alapanyag>& alapanyagTarolo,
-						const std::string& fajlnev);
+    static void mentes(const Tarolo<Recept>& receptek, const Tarolo<Alapanyag>& alapanyagok, const std::string& fajlnev);
+    static void betoltes(Tarolo<Recept>& receptek, Tarolo<Alapanyag>& alapanyagok, const std::string& fajlnev);
 };
 
-#endif
+#endif // FAJLKEZELO_H

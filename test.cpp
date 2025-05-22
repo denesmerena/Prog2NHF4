@@ -1,7 +1,7 @@
 #include "alapanyag.h"
 #include "recept.h"
 #include "tarolo.h"
-#include "fajlkezelo.h"
+#include "ignore/fajlkezelo.h"
 
 #include "gtest_lite.h"
 #include "memtrace.h"

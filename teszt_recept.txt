@@ -1,0 +1,6 @@
+[Alapanyagok]
+Citromle;ml
+Cukor;g
+
+[Receptek]
+Limonade;Citromle:50,Cukor:10
