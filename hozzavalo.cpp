@@ -1,4 +1,5 @@
 #include "hozzavalo.h"
+#include "memtrace.h"
 
 Hozzavalo::Hozzavalo(const Alapanyag& alapanyag, double mennyiseg)
     : alapanyag(alapanyag), mennyiseg(mennyiseg) {}

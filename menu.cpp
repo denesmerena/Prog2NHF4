@@ -1,7 +1,6 @@
 #include "menu.h"
-#include "ignore/fajlkezelo.h"
+#include "fajlkezelo.h"
 #include <iostream>
-#include <limits>
 #include "memtrace.h"
 
 Menu::Menu(Tarolo<Alapanyag>& alapanyagTarolo, Tarolo<Recept>& receptTarolo)
@@ -24,7 +23,7 @@ void Menu::displayMenu() const {
     std::cout << "4. Hozzavalok listazasa\n";
     std::cout << "5. Adatbazis mentese fajlba\n";
     std::cout << "6. Adatbazis betoltese fajlbol\n";
-    std::cout << "0. Kilepes\n";
+    std::cout << "7. Kilepes\n";
     std::cout << "Valassz egy opciot: ";
 }
 
@@ -136,7 +135,7 @@ void Menu::hozzavalokListazasa() {
     const Recept* recept = receptTarolo[index-1];
     std::cout << "\n" << recept->getNev() << " recept hozzavaloi:\n";
     for (int i = 0; i < recept->getHozzavaloCount(); ++i) {
-        const Hozzavalo* h = recept->getHozzavalo(i);
+        const Hozzavalo* h = recept->operator[](i);
         std::cout << "- " << h->getAlapanyag().getNev() << ": "
                   << h->getMennyiseg() << " "
                   << h->getAlapanyag().getMertekegyseg() << "\n";
@@ -145,29 +144,29 @@ void Menu::hozzavalokListazasa() {
 }
 
 void Menu::adatbazisMentes() {
-    // std::string fajlnev;
-    // std::cout << "Adja meg a fajl nevet: ";
-    // std::getline(std::cin, fajlnev);
-    //
-    // try {
-    //     Fajlkezelo::mentes(receptTarolo, alapanyagTarolo, fajlnev);
-    //     std::cout << "Adatbazis sikeresen mentve a '" << fajlnev << "' fajlba.\n\n";
-    // } catch (const std::exception& e) {
-    //     std::cerr << "Hiba tortent a mentes soran: " << e.what() << "\n\n";
-    // }
+    std::string fajlnev;
+    std::cout << "Adja meg a fajl nevet: ";
+    std::getline(std::cin, fajlnev);
+
+    try {
+        Fajlkezelo::mentes(receptTarolo, alapanyagTarolo, fajlnev);
+        std::cout << "Adatbazis sikeresen mentve a '" << fajlnev << "' fajlba.\n\n";
+    } catch (const std::exception& e) {
+        std::cerr << "Hiba tortent a mentes soran: " << e.what() << "\n\n";
+    }
 }
 
 void Menu::adatbazisBetoltes() {
-    // std::string fajlnev;
-    // std::cout << "Adja meg a fajl nevet: ";
-    // std::getline(std::cin, fajlnev);
-    //
-    // try {
-    //     Fajlkezelo::betoltes(receptTarolo, alapanyagTarolo, fajlnev);
-    //     std::cout << "Adatbazis sikeresen betoltve a '" << fajlnev << "' fajlbol.\n\n";
-    // } catch (const std::exception& e) {
-    //     std::cerr << "Hiba tortent a betoltes soran: " << e.what() << "\n\n";
-    // }
+    std::string fajlnev;
+    std::cout << "Adja meg a fajl nevet: ";
+    std::getline(std::cin, fajlnev);
+
+    try {
+        Fajlkezelo::betoltes(receptTarolo, alapanyagTarolo, fajlnev);
+        std::cout << "Adatbazis sikeresen betoltve a '" << fajlnev << "' fajlbol.\n\n";
+    } catch (const std::exception& e) {
+        std::cerr << "Hiba tortent a betoltes soran: " << e.what() << "\n\n";
+    }
 }
 
 void Menu::run() {
@@ -197,12 +196,12 @@ void Menu::run() {
             case 6:
                 adatbazisBetoltes();
                 break;
-            case 0:
+            case 7:
                 std::cout << "Kilepes...\n";
                 break;
             default:
                 std::cout << "ervenytelen valasztas!\n\n";
                 break;
         }
-    } while (valasztas != 0);
+    } while (valasztas != 7);
 }

@@ -23,7 +23,7 @@ void Fajlkezelo::mentes(const Tarolo<Recept>& receptek, const Tarolo<Alapanyag>&
         out << r->getNev() << '\n';
         out << r->getHozzavaloCount() << '\n';
         for (int j = 0; j < r->getHozzavaloCount(); ++j) {
-            const Hozzavalo* h = r->getHozzavalo(j);
+            const Hozzavalo* h = r->operator[](j);
             out << h->getAlapanyag().getNev() << ';' << h->getMennyiseg() << '\n';
         }
     }
